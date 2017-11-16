@@ -1,4 +1,4 @@
-my = "";
+my = null;
 
 $(document).ready(function() {
     /*
