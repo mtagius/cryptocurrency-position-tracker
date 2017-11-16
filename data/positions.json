@@ -11,6 +11,12 @@
             "coinAmount": 546.6,
             "purchasePrice": 3.57,
             "fee": 3.0
+        },
+        {
+            "ticker": "VTC", 
+            "coinAmount": 50.6,
+            "purchasePrice": 3.90,
+            "fee": 3.0
         }
     ]
 }
