@@ -124,15 +124,15 @@ function generateTable() {
                 coinPrice = otherResults[my.positions[i].ticker].USD;
             }
             var percentChange = (((coinPrice - my.positions[i].purchasePrice) / my.positions[i].purchasePrice) * 100);
-            if(percentChange >= 0) {
-                textClass = "make-it-rain";
-            } else {
-                textClass = "losing-money";
-            }
             totalPurchasePrice += (my.positions[i].purchasePrice * my.positions[i].coinAmount);
             totalCurrentPrice += (coinPrice  * my.positions[i].coinAmount);
             var gross = ((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount));
             totalGross += gross;
+            if(gross >= 0) {
+                textClass = "make-it-rain";
+            } else {
+                textClass = "losing-money";
+            }
             var net = (((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
             totalNet += net;
             table += "<tr>";
