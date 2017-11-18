@@ -128,13 +128,13 @@ function generateTable() {
             totalCurrentPrice += (coinPrice  * my.positions[i].coinAmount);
             var gross = ((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount));
             totalGross += gross;
-            if(gross >= 0) {
+            var net = (((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
+            totalNet += net;
+            if(net >= 0) {
                 textClass = "make-it-rain";
             } else {
                 textClass = "losing-money";
             }
-            var net = (((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
-            totalNet += net;
             table += "<tr>";
             table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase() + ".png'></td>";
             table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
