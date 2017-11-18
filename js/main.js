@@ -95,7 +95,7 @@ function nameToTicker(name) {
     return null;
 }
 
-function sortByKey(key) {
+function sortPositionsByKey(key) {
     return my.positions.sort(function(a, b) {
         var x = a[key]; var y = b[key];
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
@@ -184,7 +184,7 @@ function readPositions() {
     canRefresh = false;
     $.getJSON("data/positions.json?nocache="+new Date(), function(positions) {
         my = positions;
-        my.positions = sortByKey("ticker");
+        my.positions = sortPositionsByKey("ticker");
         tickers = [];
         for(var i = 0; i < my.positions.length; i++) {
             tickers.push(my.positions[i].ticker);
