@@ -5,3 +5,15 @@
     top: 10%;
     left: 10%;
 }
+
+td {
+    padding: 15px;
+}
+
+.losing-money {
+    color: red;
+}
+
+.make-it-rain {
+    color: green;
+}
