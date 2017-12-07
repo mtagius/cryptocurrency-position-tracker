@@ -77,6 +77,15 @@ function createAjaxRequests() {
     console.log("Created Ajax Requests")
 }
 
+function formatNumber(number, round) {
+    number = parseFloat(number);
+    if(number > 0.10) {
+        number = round > 0 ? number.toFixed(round) : number;
+    }
+    number = String(number).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    return number;
+}
+
 function tickerToName(ticker) {
     for(var i = 0; i < supported.coins.length; i++) {
         if(ticker == Object.keys(supported.coins[i])) {
@@ -130,48 +139,34 @@ function generateTable() {
             totalGross += gross;
             var net = (((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
             totalNet += net;
-            if(net >= 0) {
-                textClass = "make-it-rain";
-            } else {
-                textClass = "losing-money";
-            }
             table += "<tr>";
             table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase() + ".png'></td>";
             table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
             table += "<td>" + my.positions[i].ticker + "</td>";
-            table += "<td>$" + coinPrice.toFixed(2) + "</td>";
-            table += "<td>" + my.positions[i].coinAmount + "</td>";
-            table += "<td>$" + parseFloat(my.positions[i].purchasePrice).toFixed(2) + "</td>";
-            table += "<td>$" + parseFloat(my.positions[i].fee).toFixed(2) + "</td>";
-            table += "<td>$" + (my.positions[i].purchasePrice * my.positions[i].coinAmount).toFixed(2)  + "</td>";
-            table += "<td>$" + (coinPrice * my.positions[i].coinAmount).toFixed(2)  + "</td>";
-            table += "<td class='" + textClass + "'>" + percentChange.toFixed(2) + "%</td>";
-            table += "<td class='" + textClass + "'>$" + gross.toFixed(2) + "</td>";
-            table += "<td class='" + textClass + "'>$" + net.toFixed(2) + "</td>";
+            table += "<td>$" + formatNumber(coinPrice, 2) + "</td>";
+            table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
+            table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 2) + "</td>";
+            table += "<td>$" + formatNumber(my.positions[i].fee, 2) + "</td>";
+            table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, 2) + "</td>";
+            table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, 2)  + "</td>";
+            textClass = percentChange >= 0 ? "make-it-rain" : "losing-money";
+            table += "<td class='" + textClass + "'>" + formatNumber(percentChange, 2) + "%</td>";
+            textClass = gross >= 0 ? "make-it-rain" : "losing-money";
+            table += "<td class='" + textClass + "'>$" + formatNumber(gross, 2) + "</td>";
+            textClass = net >= 0 ? "make-it-rain" : "losing-money";
+            table += "<td class='" + textClass + "'>$" + formatNumber(net, 2) + "</td>";
             table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span></td>";
             table += "</tr>";
         }
         var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
         table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Totals:</td><td>$" + 
-            totalPurchasePrice.toFixed(2) + "</td><td>$" + totalCurrentPrice.toFixed(2) + "</td>";
-        if(totalPercent >= 0) {
-            textClass = "make-it-rain";
-        } else {
-            textClass = "losing-money";
-        }
-        table += "<td class='" + textClass + "'>" + totalPercent.toFixed(2) + "%</td>";
-        if(totalGross >= 0) {
-            textClass = "make-it-rain";
-        } else {
-            textClass = "losing-money";
-        }
-        table += "<td class='" + textClass + "'>$" + totalGross.toFixed(2) + "</td>";
-        if(totalNet >= 0) {
-            textClass = "make-it-rain";
-        } else {
-            textClass = "losing-money";
-        }
-        table += "<td class='" + textClass + "'>$" + totalNet.toFixed(2) + "</td></tr>";
+            formatNumber(totalPurchasePrice, 2) + "</td><td>$" + formatNumber(totalCurrentPrice, 2) + "</td>";
+        textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
+        table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, 2) + "%</td>";
+        textClass = totalGross >= 0 ? "make-it-rain" : "losing-money";
+        table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, 2) + "</td>";
+        textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
+        table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 2) + "</td></tr>";
         table += "</table>"
         $("#mainTable").html(table);
         console.log("Wrote Table to Page");
