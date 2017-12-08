@@ -17,35 +17,16 @@
     
     <body>
         <div id="mainContainer">
+            <h1>Open Positions</h1>
             <div id="mainTable"></div>
+            <h1>Closed Positions</h1>
             <div id="soldTable"></div>
+            <h3>Total</h3>
+            <div id="totals"></div>
         </div>
         <button id="refreshButton" type="button" class="btn">Refresh</button>
         <button id="addButton" type="button" class="btn">Add</button>
-        <div id="addPositionModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add a Position</h4>
-                    </div>
-                    <div class="modal-body">
-                        <select id="coinsListToAdd">
-                        </select>
-                        <br>
-                        <label for="coinAmount">Coin Amount:</label>
-                        <input id="coinAmount" type="text" class="form-control">
-                        <label for="purchasePrice">Purchase Price:</label>
-                        <input id="purchasePrice" type="text" class="form-control">
-                        <label for="fee">Fee:</label>
-                        <input id="fee" type="text" class="form-control">
-                    </div>
-                    <div class="modal-footer">
-                        <button id="addPositionInModal" type="button" class="btn btn-default">Add</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="modalContainer"></div>
     </body>
     
 </html>

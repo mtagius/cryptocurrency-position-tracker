@@ -115,6 +115,8 @@ function generateTable() {
         var totalCurrentPrice = 0;
         var textClass = "";
         var unsoldPositions = false;
+        var grandTotalGross = 0;
+        var grandTotalNet = 0;
         for(var i = 0; i < my.positions.length; i++) {
             if(my.positions[i].sellPrice == -1) {
                 unsoldPositions = true;
@@ -158,7 +160,7 @@ function generateTable() {
         }
         if(unsoldPositions == true) {
             var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
-            table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Totals:</td><td>$" + 
+            table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td><td>$" + 
                 formatNumber(totalPurchasePrice, 2) + "</td><td>$" + formatNumber(totalCurrentPrice, 2) + "</td>";
             textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
             table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, 2) + "%</td>";
@@ -167,6 +169,8 @@ function generateTable() {
             textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
             table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 2) + "</td></tr>";
             table += "</table>";
+            grandTotalGross += totalGross;
+            grandTotalNet += totalNet;
         } else {
             table = "<h2>No Unsold Positions</h2>";
         }
@@ -211,7 +215,7 @@ function generateTable() {
         }
         if(soldPositions == true) {
             var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
-            table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Totals:</td><td>$" + 
+            table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td><td>$" + 
                 formatNumber(totalPurchasePrice, 2) + "</td><td>$" + formatNumber(totalCurrentPrice, 2) + "</td>";
             textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
             table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, 2) + "%</td>";
@@ -220,10 +224,18 @@ function generateTable() {
             textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
             table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 2) + "</td></tr>";
             table += "</table>";
+            grandTotalGross += totalGross;
+            grandTotalNet += totalNet;
         } else {
             table = "<h2>No Sold Positions</h2>";
         }
         $("#soldTable").html(table);
+        var totals = "";
+        textClass = grandTotalGross >= 0 ? "make-it-rain" : "losing-money";
+        totals += "Gross: <span class='" + textClass + "' >" + formatNumber(grandTotalGross, 2) + "</span><br>";
+        textClass = grandTotalNet >= 0 ? "make-it-rain" : "losing-money";
+        totals += "Net: <span class='" + textClass + "' >" + formatNumber(grandTotalNet, 2) + "</span>";
+        $("#totals").html(totals);
         console.log("Wrote Tables to Page");
     } else if (ajaxCalls == -1) {
         alert("No Positions. :(");
@@ -313,27 +325,16 @@ function sellPosition(index, sellPrice) {
     });
 }
 
-$(document).ready(function() {
-    readPositions();
-    $("#refreshButton").on('click', function() {
-        if(canRefresh) {
-            canRefresh = false;
-            createAjaxRequests();
-            $("#refreshButton").addClass('disabled');
-            setTimeout(function() {
-                $("#refreshButton").removeClass('disabled');
-                canRefresh = true;
-            }, 5000);
-        }
-    });
-    $("#addButton").on('click', function() {
+function addPosition() {
+    $.get("html/add.html", function (data) {
+        $("#modalContainer").html(data);
         $("#coinsListToAdd").empty();
-        for(var i = 0; i < supported.coins.length; i++) {
+        for (var i = 0; i < supported.coins.length; i++) {
             $("#coinsListToAdd").append("<option value=\"" + Object.values(supported.coins[i]) +
                 "\">" + Object.values(supported.coins[i]) + "</option>");
         }
         $("#addPositionModal").modal("show");
-        $("#addPositionInModal").on('click', function(e) {
+        $("#addPositionInModal").on('click', function (e) {
             var newPosition = {
                 "ticker": nameToTicker($("#coinsListToAdd").val()),
                 "coinAmount": $("#coinAmount").val(),
@@ -347,15 +348,34 @@ $(document).ready(function() {
                 url: "php/addPosition.php",
                 type: "POST",
                 data: newPosition,
-                success: function(result) {
+                success: function (result) {
                     console.log("PHP added New Position!");
                     readPositions();
                 }
             });
-            $("#coinAmount").val("");
-            $("#purchasePrice").val("");
-            $("#fee").val("");
             $("#addPositionModal").modal("hide");
         });
+    });
+}
+
+function refresh() {
+    if(canRefresh) {
+        canRefresh = false;
+        createAjaxRequests();
+        $("#refreshButton").addClass('disabled');
+        setTimeout(function() {
+            $("#refreshButton").removeClass('disabled');
+            canRefresh = true;
+        }, 5000);
+    }
+}
+
+$(document).ready(function() {
+    readPositions();
+    $("#refreshButton").on('click', function() {
+        refresh();
+    });
+    $("#addButton").on('click', function() {
+        addPosition();
     });
 });
