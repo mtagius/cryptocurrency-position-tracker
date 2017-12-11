@@ -79,7 +79,7 @@ function createAjaxRequests() {
 
 function formatNumber(number, round) {
     number = parseFloat(number);
-    if(number > 0.10) {
+    if(number > 0.10 || number < -0.1) {
         number = round > 0 ? number.toFixed(round) : number;
     }
     number = String(number).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -154,7 +154,7 @@ function generateTable() {
                 textClass = net >= 0 ? "make-it-rain" : "losing-money";
                 table += "<td class='" + textClass + "'>$" + formatNumber(net, 2) + "</td>";
                 table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span>";
-                table += "<span class='glyphicon glyphicon-usd' onclick='sellPosition(" + i + "," + (10) + ")'></td>";
+                table += "<span class='glyphicon glyphicon-usd' onclick='sellPosition(" + i + ")'></td>";
                 table += "</tr>";
             }
         }
@@ -311,17 +311,27 @@ function removePosition(index) {
     });
 }
 
-function sellPosition(index, sellPrice) {
-    $.ajax({
-        url: "php/sellPosition.php",
-        type: "POST",
-        data: {
-            index: index,
-            sellPrice, sellPrice},
-        success: function(result) {
-            console.log("PHP sold position at index " + index + " for the price of $" + sellPrice);
-            readPositions();
-        }
+function sellPosition(index) {
+    $.get("html/sell.html", function (data) {
+        $("#modalContainer").html(data);
+        $("#sellPositionModal").modal("show");
+        $("#sellPositionInModal").on('click', function (e) {
+            var sellPrice = $("#coinPrice").val();
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $.ajax({
+                url: "php/sellPosition.php",
+                type: "POST",
+                data: {
+                    index: index,
+                    sellPrice, sellPrice},
+                success: function(result) {
+                    console.log("PHP sold position at index " + index + " for the price of $" + sellPrice);
+                    readPositions();
+                }
+            });
+            $("#sellPositionModal").modal("hide");
+        });
     });
 }
 
