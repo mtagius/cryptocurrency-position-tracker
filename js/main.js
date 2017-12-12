@@ -344,7 +344,7 @@ function addPosition() {
                 "\">" + Object.values(supported.coins[i]) + "</option>");
         }
         $("#addPositionModal").modal("show");
-        $("#addPositionInModal").on('click', function (e) {
+        $("#addForm").submit( function (e) {
             var newPosition = {
                 "ticker": nameToTicker($("#coinsListToAdd").val()),
                 "coinAmount": $("#coinAmount").val(),
