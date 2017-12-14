@@ -1,7 +1,10 @@
 supported = {
     "coins": [ 
         {BTC:"Bitcoin"}, 
-        {VTC:"Vertcoin"}
+        {VTC:"Vertcoin"},
+        {ETH:"Ether"},
+        {LTC:"Litecoin"},
+        {XRP:"Ripple"}
     ]
 };
 my = null;
