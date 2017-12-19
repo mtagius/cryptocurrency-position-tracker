@@ -6,7 +6,7 @@ supported = {
         {XRP:"Ripple"},
         {LTC:"Litecoin"},
         {ADA:"Cardano"},
-        {MIOTA:"IOTA"},
+        {IOTA:"IOTA"},
         {DASH:"Dash"},
         {XEM:"NEM"},
         {EOS:"EOS"},
@@ -93,7 +93,7 @@ function createAjaxRequests() {
 
 function formatNumber(number, round) {
     number = parseFloat(number);
-    if((round) || Math.abs((number - (parseInt(number)))) >= 0.10) {
+    if((round) || (Math.abs((number - (parseInt(number)))) >= 0.10) || (parseInt(number) == number)) {
         number = number.toFixed(2);
     }
     number = String(number).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -160,7 +160,7 @@ function generateTable() {
                 table += "<td>$" + formatNumber(my.positions[i].purchasePrice, false) + "</td>";
                 table += "<td>$" + formatNumber(my.positions[i].fee, false) + "</td>";
                 table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, true) + "</td>";
-                table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, true)  + "</td>";
+                table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, false)  + "</td>";
                 textClass = percentChange >= 0 ? "make-it-rain" : "losing-money";
                 table += "<td class='" + textClass + "'>" + formatNumber(percentChange, true) + "%</td>";
                 textClass = gross >= 0 ? "make-it-rain" : "losing-money";
