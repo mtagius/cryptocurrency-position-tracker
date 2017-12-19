@@ -2,23 +2,16 @@
     "positions": [
         {
             "ticker": "BTC",
-            "coinAmount": "0.000089756",
+            "coinAmount": "0.0000089756",
             "purchasePrice": "7300.90",
-            "fee": "0.0",
+            "fee": "0.0400005",
             "sellPrice": "-1"
-        },
-        {
-            "ticker": "BTC",
-            "coinAmount": "1",
-            "purchasePrice": "3800",
-            "fee": "50",
-            "sellPrice": "6000"
         },
         {
             "ticker": "VTC",
             "coinAmount": "546.6",
             "purchasePrice": "3.52",
-            "fee": "3.0",
+            "fee": "3.1",
             "sellPrice": "-1"
         },
         {

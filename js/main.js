@@ -82,8 +82,8 @@ function createAjaxRequests() {
 
 function formatNumber(number, round) {
     number = parseFloat(number);
-    if(number > 0.10 || number < -0.1) {
-        number = round > 0 ? number.toFixed(round) : number;
+    if((round) || Math.abs((number - (parseInt(number)))) >= 0.10) {
+        number = number.toFixed(2);
     }
     number = String(number).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     return number;
@@ -110,7 +110,7 @@ function nameToTicker(name) {
 function generateTable() {
     canRefresh = true;
     if(ajaxCalls == 0) {
-        var table = "<table><tr><th></th><th>Coin</th><th>Ticker</th><th>Current Price</th><th>Coin Amount</th>" +
+        var table = "<h1>Open Positions</h1><table><tr><th></th><th>Coin</th><th>Ticker</th><th>Current Price</th><th>Coin Amount</th>" +
             "<th>Purchase Price</th><th>Fees</th><th>Initial Investment</th><th>Current Worth</th><th>Percent Change</th><th>Gross</th><th>Net</th><th></th></tr>";
         var totalGross = 0;
         var totalNet = 0;
@@ -144,18 +144,18 @@ function generateTable() {
                 table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase() + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
-                table += "<td>$" + formatNumber(coinPrice, 2) + "</td>";
-                table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 2) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].fee, 2) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, 2) + "</td>";
-                table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, 2)  + "</td>";
+                table += "<td>$" + formatNumber(coinPrice, false) + "</td>";
+                table += "<td>" + formatNumber(my.positions[i].coinAmount, false) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, false) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].fee, false) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, true) + "</td>";
+                table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, true)  + "</td>";
                 textClass = percentChange >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, 2) + "%</td>";
+                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, true) + "%</td>";
                 textClass = gross >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(gross, 2) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(gross, true) + "</td>";
                 textClass = net >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(net, 2) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(net, true) + "</td>";
                 table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span>";
                 table += "<span class='glyphicon glyphicon-usd' onclick='sellPosition(" + i + ")'></td>";
                 table += "</tr>";
@@ -164,21 +164,21 @@ function generateTable() {
         if(unsoldPositions == true) {
             var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
             table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td><td>$" + 
-                formatNumber(totalPurchasePrice, 2) + "</td><td>$" + formatNumber(totalCurrentPrice, 2) + "</td>";
+                formatNumber(totalPurchasePrice, true) + "</td><td>$" + formatNumber(totalCurrentPrice, true) + "</td>";
             textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, 2) + "%</td>";
+            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, true) + "%</td>";
             textClass = totalGross >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, 2) + "</td>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, true) + "</td>";
             textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 2) + "</td></tr>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, true) + "</td></tr>";
             table += "</table>";
             grandTotalGross += totalGross;
             grandTotalNet += totalNet;
         } else {
-            table = "<h2>No Unsold Positions</h2>";
+            table = "";
         }
         $("#mainTable").html(table);
-        table = "<table><tr><th></th><th>Coin</th><th>Ticker</th><th>Sold Price</th><th>Coin Amount</th>" +
+        table = "<h1>Closed Positions</h1><table><tr><th></th><th>Coin</th><th>Ticker</th><th>Sold Price</th><th>Coin Amount</th>" +
         "<th>Purchase Price</th><th>Fees</th><th>Initial Investment</th><th>Sold Value</th><th>Percent Change</th><th>Gross</th><th>Net</th><th></th></tr>";
         totalGross = 0;
         totalNet = 0;
@@ -201,44 +201,46 @@ function generateTable() {
                 table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase() + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
-                table += "<td>$" + formatNumber(soldPrice, 2) + "</td>";
-                table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 2) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].fee, 2) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, 2) + "</td>";
-                table += "<td>$" + formatNumber(soldPrice * my.positions[i].coinAmount, 2)  + "</td>";
+                table += "<td>$" + formatNumber(soldPrice, false) + "</td>";
+                table += "<td>" + formatNumber(my.positions[i].coinAmount, false) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, false) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].fee, false) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, true) + "</td>";
+                table += "<td>$" + formatNumber(soldPrice * my.positions[i].coinAmount, false)  + "</td>";
                 textClass = percentChange >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, 2) + "%</td>";
+                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, true) + "%</td>";
                 textClass = gross >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(gross, 2) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(gross, true) + "</td>";
                 textClass = net >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(net, 2) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(net, true) + "</td>";
                 table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span></td></tr>";
             }
         }
         if(soldPositions == true) {
             var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
             table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td><td>$" + 
-                formatNumber(totalPurchasePrice, 2) + "</td><td>$" + formatNumber(totalCurrentPrice, 2) + "</td>";
+                formatNumber(totalPurchasePrice, true) + "</td><td>$" + formatNumber(totalCurrentPrice, true) + "</td>";
             textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, 2) + "%</td>";
+            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, true) + "%</td>";
             textClass = totalGross >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, 2) + "</td>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, true) + "</td>";
             textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 2) + "</td></tr>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, true) + "</td></tr>";
             table += "</table>";
             grandTotalGross += totalGross;
             grandTotalNet += totalNet;
         } else {
-            table = "<h2>No Sold Positions</h2>";
+            table = "";
         }
         $("#soldTable").html(table);
-        var totals = "";
-        textClass = grandTotalGross >= 0 ? "make-it-rain" : "losing-money";
-        totals += "Gross: <span class='" + textClass + "' >" + formatNumber(grandTotalGross, 2) + "</span><br>";
-        textClass = grandTotalNet >= 0 ? "make-it-rain" : "losing-money";
-        totals += "Net: <span class='" + textClass + "' >" + formatNumber(grandTotalNet, 2) + "</span>";
-        $("#totals").html(totals);
+        if(($("#mainTable").html() != "") || ($("#soldTable").html() != "")) {
+            var totals = "<h3>Total</h3>";
+            textClass = grandTotalGross >= 0 ? "make-it-rain" : "losing-money";
+            totals += "Gross: <span class='" + textClass + "' >$" + formatNumber(grandTotalGross, true) + "</span><br>";
+            textClass = grandTotalNet >= 0 ? "make-it-rain" : "losing-money";
+            totals += "Net: <span class='" + textClass + "' >$" + formatNumber(grandTotalNet, true) + "</span>";
+            $("#totals").html(totals);
+        }
         console.log("Wrote Tables to Page");
     } else if (ajaxCalls == -1) {
         alert("No Positions. :(");
@@ -318,7 +320,7 @@ function sellPosition(index) {
     $.get("html/sell.html", function (data) {
         $("#modalContainer").html(data);
         $("#sellPositionModal").modal("show");
-        $("#sellPositionInModal").on('click', function (e) {
+        $("#sellForm").submit( function (e) {
             var sellPrice = $("#coinPrice").val();
             e.preventDefault();
             e.stopImmediatePropagation();
