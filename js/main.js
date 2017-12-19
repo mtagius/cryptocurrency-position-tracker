@@ -1,10 +1,21 @@
 supported = {
     "coins": [ 
         {BTC:"Bitcoin"}, 
-        {VTC:"Vertcoin"},
         {ETH:"Ether"},
+        {BCH:"Bitcoin Cash"},
+        {XRP:"Ripple"},
         {LTC:"Litecoin"},
-        {XRP:"Ripple"}
+        {ADA:"Cardano"},
+        {MIOTA:"IOTA"},
+        {DASH:"Dash"},
+        {XEM:"NEM"},
+        {EOS:"EOS"},
+        {XMR:"Monero"},
+        {BTG:"Bitcoin Gold"},
+        {QTUM:"Qtum"},
+        {USDT:"Tether"},
+        {DOGE:"Dogecoin"},
+        {VTC:"Vertcoin"}
     ]
 };
 my = null;
@@ -141,7 +152,7 @@ function generateTable() {
                 var net = (((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
                 totalNet += net;
                 table += "<tr>";
-                table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase() + ".png'></td>";
+                table += "<td><img width='100' height='100' src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
                 table += "<td>$" + formatNumber(coinPrice, false) + "</td>";
@@ -198,7 +209,7 @@ function generateTable() {
                 var net = (((soldPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
                 totalNet += net;
                 table += "<tr>";
-                table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase() + ".png'></td>";
+                table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
                 table += "<td>$" + formatNumber(soldPrice, false) + "</td>";
