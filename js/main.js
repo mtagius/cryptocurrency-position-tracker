@@ -398,6 +398,18 @@ function refresh() {
 
 $(document).ready(function() {
     readPositions();
+    $('#particles').particleground({
+        dotColor: '#000000',
+        lineColor: '#000000',
+        density: 15000,
+        minSpeedX: .1,
+        maxSpeedX: 1,
+        minSpeedY: .1,
+        maxSpeedY: 1,
+        particleRadius: 15,
+        parallaxMultiplier: 10,
+        proximity: 120
+    });
     $("#refreshButton").on('click', function() {
         refresh();
     });

@@ -1,24 +1,115 @@
 {
     "positions": [
         {
-            "ticker": "BTC",
-            "coinAmount": "0.0000089756",
-            "purchasePrice": "7300.90",
-            "fee": "0.0400005",
+            "ticker": "ADA",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
             "sellPrice": "-1"
         },
         {
             "ticker": "BCH",
-            "coinAmount": "546.6",
-            "purchasePrice": "3.52",
-            "fee": "3.1",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "BTC",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "BTG",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "DASH",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "DOGE",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": ".0057"
+        },
+        {
+            "ticker": "EOS",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "12"
+        },
+        {
+            "ticker": "ETH",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "IOTA",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "LTC",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "QTUM",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "USDT",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
             "sellPrice": "-1"
         },
         {
             "ticker": "VTC",
-            "coinAmount": "50000000.6",
-            "purchasePrice": "3.90",
-            "fee": "3000000.0",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "XEM",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "XMR",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "XRP",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
             "sellPrice": "-1"
         }
     ]

@@ -1,9 +1,11 @@
 #mainContainer {
     position: absolute;
-    width: 80%;
-    height: 80%;
-    top: 10%;
-    left: 10%;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    width: 100%;
+    height: 90%;
+    top: 5%;
+    background:rgba(255,255,255,0.95);
 }
 
 #mainTable {
@@ -24,6 +26,12 @@ td {
 
 .make-it-rain {
     color: green;
+}
+
+#particles {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .modal input[type="number"]::-webkit-outer-spin-button,

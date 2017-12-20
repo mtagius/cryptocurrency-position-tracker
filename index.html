@@ -6,6 +6,7 @@
         <link href="styles/style.css" rel="stylesheet" type="text/css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src='js/jquery.particleground.min.js'></script>
         <script type="text/javascript" src="js/main.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="cache-control" content="max-age=0" />
@@ -15,15 +16,17 @@
         <meta http-equiv="pragma" content="no-cache" />
     </head>
     
-    <body>
+<body>
+    <div id="particles">
         <div id="mainContainer">
             <div id="mainTable"></div>
             <div id="soldTable"></div>
             <div id="totals"></div>
+            <button id="refreshButton" type="button" class="btn">Refresh</button>
+            <button id="addButton" type="button" class="btn">Add</button>
+            <div id="modalContainer"></div>
         </div>
-        <button id="refreshButton" type="button" class="btn">Refresh</button>
-        <button id="addButton" type="button" class="btn">Add</button>
-        <div id="modalContainer"></div>
-    </body>
+    </div>
+</body>
     
 </html>
