@@ -19,7 +19,7 @@ supported = {
     ]
 };
 my = null;
-gdaxCoins = ["BTC", "ETH", "LTC"];
+gdaxCoins = ["BTC", "ETH", "LTC", "BCH"];
 gdaxPricesNeeded = [];
 otherPricesNeeded = [];
 gdaxResults = null;
@@ -93,7 +93,7 @@ function createAjaxRequests() {
 
 function formatNumber(number, round) {
     number = parseFloat(number);
-    if((round) || (Math.abs((number - (parseInt(number)))) >= 0.10) || (parseInt(number) == number)) {
+    if((round) && ((Math.abs((number - (parseInt(number)))) >= 0.10) && (parseInt(number) != 0)) || (parseInt(number) == number)) {
         number = number.toFixed(2);
     }
     number = String(number).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -155,7 +155,7 @@ function generateTable() {
                 table += "<td><img width='100' height='100' src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
-                table += "<td>$" + formatNumber(coinPrice, false) + "</td>";
+                table += "<td>$" + formatNumber(coinPrice, true) + "</td>";
                 table += "<td>" + formatNumber(my.positions[i].coinAmount, false) + "</td>";
                 table += "<td>$" + formatNumber(my.positions[i].purchasePrice, false) + "</td>";
                 table += "<td>$" + formatNumber(my.positions[i].fee, false) + "</td>";
