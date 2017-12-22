@@ -5,7 +5,11 @@ array_push($json_array['positions'], $_POST);
 
 function sortByTickerandCoinAmount($a, $b) {
     if($a['ticker'] == $b['ticker']) {
-        return ($a['coinAmount'] > $b['coinAmount']) ? -1 : 1;
+        if(($a['sellPrice'] != "-1") && (($b['sellPrice'] != "-1"))) {
+            return (($a['coinAmount'] * $a['sellPrice']) - ($a['coinAmount'] * $a['purchasePrice']) > ($b['coinAmount'] * $b['sellPrice']) - ($b['coinAmount'] * $b['purchasePrice']) ) ? -1 : 1;
+        } else {
+            return ($a['coinAmount'] * $a['purchasePrice'] > $b['coinAmount'] * $b['purchasePrice']) ? -1 : 1;
+        }
     } else {
         return ($a['ticker'] < $b['ticker']) ? -1 : 1;
     }
