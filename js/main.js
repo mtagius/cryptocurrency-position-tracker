@@ -13,6 +13,7 @@ supported = {
         {XMR:"Monero"},
         {BTG:"Bitcoin Gold"},
         {QTUM:"Qtum"},
+        {ZEC:"Zcash"},
         {USDT:"Tether"},
         {DOGE:"Dogecoin"},
         {VTC:"Vertcoin"}

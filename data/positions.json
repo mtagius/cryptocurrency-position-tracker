@@ -2,22 +2,22 @@
     "positions": [
         {
             "ticker": "ADA",
-            "coinAmount": "1",
-            "purchasePrice": "1",
+            "coinAmount": ".0001",
+            "purchasePrice": ".0001",
             "fee": "1",
             "sellPrice": "-1"
         },
         {
             "ticker": "BCH",
-            "coinAmount": "1",
-            "purchasePrice": "1",
+            "coinAmount": "1.0078",
+            "purchasePrice": "1.0078",
             "fee": "1",
             "sellPrice": "-1"
         },
         {
             "ticker": "BTC",
-            "coinAmount": "1",
-            "purchasePrice": "1",
+            "coinAmount": ".687",
+            "purchasePrice": ".678",
             "fee": "1",
             "sellPrice": "-1"
         },
@@ -72,6 +72,13 @@
         },
         {
             "ticker": "QTUM",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
+            "ticker": "ZEC",
             "coinAmount": "1",
             "purchasePrice": "1",
             "fee": "1",
