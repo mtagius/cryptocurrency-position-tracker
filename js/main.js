@@ -92,12 +92,18 @@ function createAjaxRequests() {
     console.log("Created Ajax Requests")
 }
 
-function formatNumber(number, round) {
+function formatNumber(number,shouldRound) {
     number = parseFloat(number);
-    if((round) && ((Math.abs((number - (parseInt(number)))) >= 0.10) && (parseInt(number) != 0)) || (parseInt(number) == number)) {
+    if((shouldRound == 1) || ((shouldRound == 0) && (number > .1))) {
         number = number.toFixed(2);
     }
+    if(String(number).search(/\./g) == -1) {
+        number = String(number) + ".";
+    }
     number = String(number).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    if(number.endsWith(".")) {
+        number = number.slice(0, -1);
+    }
     return number;
 }
 
@@ -156,18 +162,18 @@ function generateTable() {
                 table += "<td><img width='100' height='100' src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
-                table += "<td>$" + formatNumber(coinPrice, true) + "</td>";
-                table += "<td>" + formatNumber(my.positions[i].coinAmount, false) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, false) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].fee, false) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, true) + "</td>";
-                table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, false)  + "</td>";
+                table += "<td>$" + formatNumber(coinPrice, 0) + "</td>";
+                table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 0) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].fee, 0) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, 0) + "</td>";
+                table += "<td>$" + formatNumber(coinPrice * my.positions[i].coinAmount, 0)  + "</td>";
                 textClass = percentChange >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, true) + "%</td>";
+                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, 1) + "%</td>";
                 textClass = gross >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(gross, true) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(gross, 1) + "</td>";
                 textClass = net >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(net, true) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(net, 1) + "</td>";
                 table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span>";
                 table += "<span class='glyphicon glyphicon-usd' onclick='sellPosition(" + i + ")'></td>";
                 table += "</tr>";
@@ -176,13 +182,13 @@ function generateTable() {
         if(unsoldPositions == true) {
             var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
             table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td><td>$" + 
-                formatNumber(totalPurchasePrice, true) + "</td><td>$" + formatNumber(totalCurrentPrice, true) + "</td>";
+                formatNumber(totalPurchasePrice, 1) + "</td><td>$" + formatNumber(totalCurrentPrice, 1) + "</td>";
             textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, true) + "%</td>";
+            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, 1) + "%</td>";
             textClass = totalGross >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, true) + "</td>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, 1) + "</td>";
             textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, true) + "</td></tr>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 1) + "</td></tr>";
             table += "</table>";
             grandTotalGross += totalGross;
             grandTotalNet += totalNet;
@@ -203,8 +209,6 @@ function generateTable() {
                 soldPositions = true;
                 var soldPrice = parseFloat(my.positions[i].sellPrice);
                 var percentChange = (((soldPrice - my.positions[i].purchasePrice) / my.positions[i].purchasePrice) * 100);
-                totalPurchasePrice += (my.positions[i].purchasePrice * my.positions[i].coinAmount);
-                totalCurrentPrice += (soldPrice  * my.positions[i].coinAmount);
                 var gross = ((soldPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount));
                 totalGross += gross;
                 var net = (((soldPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
@@ -213,31 +217,27 @@ function generateTable() {
                 table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
-                table += "<td>$" + formatNumber(soldPrice, false) + "</td>";
-                table += "<td>" + formatNumber(my.positions[i].coinAmount, false) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, false) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].fee, false) + "</td>";
-                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, true) + "</td>";
-                table += "<td>$" + formatNumber(soldPrice * my.positions[i].coinAmount, false)  + "</td>";
+                table += "<td>$" + formatNumber(soldPrice, 0) + "</td>";
+                table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 0) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].fee, 0) + "</td>";
+                table += "<td>$" + formatNumber(my.positions[i].purchasePrice * my.positions[i].coinAmount, 0) + "</td>";
+                table += "<td>$" + formatNumber(soldPrice * my.positions[i].coinAmount, 0)  + "</td>";
                 textClass = percentChange >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, true) + "%</td>";
+                table += "<td class='" + textClass + "'>" + formatNumber(percentChange, 1) + "%</td>";
                 textClass = gross >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(gross, true) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(gross, 1) + "</td>";
                 textClass = net >= 0 ? "make-it-rain" : "losing-money";
-                table += "<td class='" + textClass + "'>$" + formatNumber(net, true) + "</td>";
+                table += "<td class='" + textClass + "'>$" + formatNumber(net, 1) + "</td>";
                 table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span></td></tr>";
             }
         }
         if(soldPositions == true) {
-            var totalPercent = (((totalCurrentPrice - totalPurchasePrice) / totalPurchasePrice) * 100);
-            table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td><td>$" + 
-                formatNumber(totalPurchasePrice, true) + "</td><td>$" + formatNumber(totalCurrentPrice, true) + "</td>";
-            textClass = totalPercent >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>" + formatNumber(totalPercent, true) + "%</td>";
+            table += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Total:</td>";
             textClass = totalGross >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, true) + "</td>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalGross, 1) + "</td>";
             textClass = totalNet >= 0 ? "make-it-rain" : "losing-money";
-            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, true) + "</td></tr>";
+            table += "<td class='" + textClass + "'>$" + formatNumber(totalNet, 1) + "</td></tr>";
             table += "</table>";
             grandTotalGross += totalGross;
             grandTotalNet += totalNet;
@@ -248,9 +248,9 @@ function generateTable() {
         if(($("#mainTable").html() != "") || ($("#soldTable").html() != "")) {
             var totals = "<h3>Total</h3>";
             textClass = grandTotalGross >= 0 ? "make-it-rain" : "losing-money";
-            totals += "Gross: <span class='" + textClass + "' >$" + formatNumber(grandTotalGross, true) + "</span><br>";
+            totals += "Gross: <span class='" + textClass + "' >$" + formatNumber(grandTotalGross, 1) + "</span><br>";
             textClass = grandTotalNet >= 0 ? "make-it-rain" : "losing-money";
-            totals += "Net: <span class='" + textClass + "' >$" + formatNumber(grandTotalNet, true) + "</span>";
+            totals += "Net: <span class='" + textClass + "' >$" + formatNumber(grandTotalNet, 1) + "</span>";
             $("#totals").html(totals);
         }
         console.log("Wrote Tables to Page");

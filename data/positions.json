@@ -23,7 +23,7 @@
         },
         {
             "ticker": "BTG",
-            "coinAmount": "1",
+            "coinAmount": "1000",
             "purchasePrice": "1",
             "fee": "1",
             "sellPrice": "-1"
