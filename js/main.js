@@ -128,7 +128,7 @@ function nameToTicker(name) {
 function generateTable() {
     canRefresh = true;
     if(ajaxCalls == 0) {
-        var table = "<h1>Open Positions</h1><table><tr><th></th><th>Coin</th><th>Ticker</th><th>Current Price</th><th>Coin Amount</th>" +
+        var table = "<h1>Open Positions</h1><table><tr class='table-header'><th></th><th>Coin</th><th>Ticker</th><th>Current Price</th><th>Coin Amount</th>" +
             "<th>Purchase Price</th><th>Fees</th><th>Initial Investment</th><th>Current Worth</th><th>Percent Change</th><th>Gross</th><th>Net</th><th></th></tr>";
         var totalGross = 0;
         var totalNet = 0;
@@ -159,7 +159,7 @@ function generateTable() {
                 var net = (((coinPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
                 totalNet += net;
                 table += "<tr>";
-                table += "<td><img width='100' height='100' src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
+                table += "<td class='coin-logos'><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
                 table += "<td>$" + formatNumber(coinPrice, 0) + "</td>";
@@ -174,9 +174,8 @@ function generateTable() {
                 table += "<td class='" + textClass + "'>$" + formatNumber(gross, 1) + "</td>";
                 textClass = net >= 0 ? "make-it-rain" : "losing-money";
                 table += "<td class='" + textClass + "'>$" + formatNumber(net, 1) + "</td>";
-                table += "<td><span class='glyphicon glyphicon-remove' onclick='removePosition(" + i + ")'></span>";
-                table += "<span class='glyphicon glyphicon-usd' onclick='sellPosition(" + i + ")'></td>";
-                table += "</tr>";
+                table += "<td><span class='glyphicon glyphicon-usd main-table-icon' onclick='sellPosition(" + i + ")'></span>";
+                table += "<span class='glyphicon glyphicon-remove main-table-icon' onclick='removePosition(" + i + ")'></span></td></tr>";
             }
         }
         if(unsoldPositions == true) {
@@ -196,7 +195,7 @@ function generateTable() {
             table = "";
         }
         $("#mainTable").html(table);
-        table = "<h1>Closed Positions</h1><table><tr><th></th><th>Coin</th><th>Ticker</th><th>Sold Price</th><th>Coin Amount</th>" +
+        table = "<h1>Closed Positions</h1><table><tr class='table-header'><th></th><th>Coin</th><th>Ticker</th><th>Sold Price</th><th>Coin Amount</th>" +
         "<th>Purchase Price</th><th>Fees</th><th>Initial Investment</th><th>Sold Value</th><th>Percent Change</th><th>Gross</th><th>Net</th><th></th></tr>";
         totalGross = 0;
         totalNet = 0;
@@ -214,7 +213,7 @@ function generateTable() {
                 var net = (((soldPrice * my.positions[i].coinAmount) - (my.positions[i].purchasePrice * my.positions[i].coinAmount)) - (my.positions[i].fee));
                 totalNet += net;
                 table += "<tr>";
-                table += "<td><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
+                table += "<td class='coin-logos'><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
                 table += "<td>" + my.positions[i].ticker + "</td>";
                 table += "<td>$" + formatNumber(soldPrice, 0) + "</td>";
@@ -400,8 +399,8 @@ function refresh() {
 $(document).ready(function() {
     readPositions();
     $('#particles').particleground({
-        dotColor: '#000000',
-        lineColor: '#000000',
+        dotColor: '#ebebeb',
+        lineColor: '#ebebeb',
         density: 15000,
         minSpeedX: .1,
         maxSpeedX: 1,
