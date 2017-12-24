@@ -244,13 +244,18 @@ function generateTable() {
             table = "";
         }
         $("#soldTable").html(table);
-        if(($("#mainTable").html() != "") || ($("#soldTable").html() != "")) {
-            var totals = "<h3>Total</h3>";
+        if(($("#mainTable").html() != "") && ($("#soldTable").html() != "")) {
+            var totals = "<h1>Total</h1>";
             textClass = grandTotalGross >= 0 ? "make-it-rain" : "losing-money";
-            totals += "Gross: <span class='" + textClass + "' >$" + formatNumber(grandTotalGross, 1) + "</span><br>";
+            totals += "<table><tr><td>Gross:</td><td><span class='" + textClass + "' >$" + formatNumber(grandTotalGross, 1) + "</span></td></tr>";
             textClass = grandTotalNet >= 0 ? "make-it-rain" : "losing-money";
-            totals += "Net: <span class='" + textClass + "' >$" + formatNumber(grandTotalNet, 1) + "</span>";
+            totals += "<tr><td>Net:</td><td><span class='" + textClass + "' >$" + formatNumber(grandTotalNet, 1) + "</span></td></tr></table>";
             $("#totals").html(totals);
+        }
+        if($("#mainTable").html() == "") {
+            $("#mainTable").css({"margin-bottom": "0px"});
+        } else {
+            $("#mainTable").css({"margin-bottom": "100px"});
         }
         console.log("Wrote Tables to Page");
     } else if (ajaxCalls == -1) {
