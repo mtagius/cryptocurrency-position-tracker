@@ -78,6 +78,13 @@
             "sellPrice": "-1"
         },
         {
+            "ticker": "XVG",
+            "coinAmount": "1",
+            "purchasePrice": "1",
+            "fee": "1",
+            "sellPrice": "-1"
+        },
+        {
             "ticker": "ZEC",
             "coinAmount": "1",
             "purchasePrice": "1",
