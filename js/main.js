@@ -108,6 +108,15 @@ function formatNumber(number,shouldRound) {
     return number;
 }
 
+function coinHyperlink(ticker) {
+    var coinName = tickerToName(ticker);
+    coinName = coinName.replace(/ /g, "-");
+    if(coinName == "Ether") {
+        coinName = "ethereum";
+    }
+    return "https://coinmarketcap.com/currencies/" + coinName;
+}
+
 function tickerToName(ticker) {
     for(var i = 0; i < supported.coins.length; i++) {
         if(ticker == Object.keys(supported.coins[i])) {
@@ -162,7 +171,7 @@ function generateTable() {
                 table += "<tr>";
                 table += "<td class='coin-logos'><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
-                table += "<td>" + my.positions[i].ticker + "</td>";
+                table += "<td>" + "<a href='" + coinHyperlink(my.positions[i].ticker) + "' target='_blank'>" + my.positions[i].ticker + "</a></td>";
                 table += "<td>$" + formatNumber(coinPrice, 0) + "</td>";
                 table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
                 table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 0) + "</td>";
@@ -216,7 +225,7 @@ function generateTable() {
                 table += "<tr>";
                 table += "<td class='coin-logos'><img src='img/" + tickerToName(my.positions[i].ticker).toLowerCase().replace(/ /g,'') + ".png'></td>";
                 table += "<td>" + tickerToName(my.positions[i].ticker) + "</td>";
-                table += "<td>" + my.positions[i].ticker + "</td>";
+                table += "<td>" + "<a href='" + coinHyperlink(my.positions[i].ticker) + "' target='_blank'>" + my.positions[i].ticker + "</a></td>";
                 table += "<td>$" + formatNumber(soldPrice, 0) + "</td>";
                 table += "<td>" + formatNumber(my.positions[i].coinAmount, -1) + "</td>";
                 table += "<td>$" + formatNumber(my.positions[i].purchasePrice, 0) + "</td>";
