@@ -257,6 +257,9 @@ function generateTable() {
         } else {
             $("#mainTable").css({"margin-bottom": "100px"});
         }
+        if(($("#mainTable").html() == "") && ($("#soldTable").html() == "")) {
+            $("#mainTable").html("<h1>Click the button to add your first Position!</h1>");
+        }
         console.log("Wrote Tables to Page");
     } else if (ajaxCalls == -1) {
         alert("No Positions. :(");
