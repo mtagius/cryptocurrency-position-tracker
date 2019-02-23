@@ -21,7 +21,7 @@ supported = {
     ]
 };
 my = null;
-gdaxCoins = ["BTC", "ETH", "LTC", "BCH"];
+gdaxCoins = [];
 gdaxPricesNeeded = [];
 otherPricesNeeded = [];
 gdaxResults = null;
